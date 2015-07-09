@@ -1,13 +1,13 @@
 package com.saif;
 
 /**
- * Hello world!
- *
+ * Main method
  */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Score s = new Score("9/23");
+        System.out.println("Score is " + s.getResult());
     }
 }
