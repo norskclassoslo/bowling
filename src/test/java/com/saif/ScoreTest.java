@@ -31,14 +31,36 @@ public class ScoreTest
     /**
      * Rigourous Test :-)
      */
-    public void testScore()
+
+    public void testMaximumScore()
     {
         Score s = new Score("XXXXXXXXXXXX");
         assertEquals(300,s.getResult());
-        s= new Score("--------------------");
+    }
+
+    public void testMinimumScore(){
+        Score s= new Score("--------------------");
         assertEquals(0, s.getResult());
-        s= new Score("-/2");
+    }
+
+    public void testScore()
+    {
+        Score s = new Score("-/2");
         assertEquals(14, s.getResult());
+    }
+
+    public void testException(){
+        Score s;
+        boolean exceptionThrown = false;
+        try{
+            s = new Score("1X");
+            s.getResult();
+        }
+        catch (IllegalArgumentException e){
+            exceptionThrown = true;
+        }
+
+        assertTrue(exceptionThrown);
     }
 
     public void testCalculateFrame() throws Exception {

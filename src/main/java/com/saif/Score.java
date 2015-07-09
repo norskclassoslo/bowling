@@ -4,16 +4,16 @@ package com.saif;
  * Created by saif on 7/9/15.
  */
 public class Score {
-    private String input;
-    private int frames[] = new int[MAX_FRAME]; // frames shouldn't have any set method. It should only be derived from 'input'
+    private String rolls;
+    private int frames[] = new int[MAX_FRAME]; // frames shouldn't have any set method. It should only be derived from 'rolls'
     public static final int MAX_PIN = 10;
     public static final int MAX_FRAME = 10;
     public static final char SPARE = '/';
     public static final char STRIKE = 'X';
     public static final char MISS = '-';
 
-    public void setInput(String str) {
-        input = str;
+    public void setRolls(String str) {
+        rolls = str;
         calculateFrameValues();
     }
 
@@ -21,7 +21,7 @@ public class Score {
     }
 
     public Score(String word){
-        setInput(word);
+        setRolls(word);
     }
 
     /*
@@ -31,31 +31,31 @@ public class Score {
     public void calculateFrameValues() {
         int frame=0;
         int tries=1;
-        for (int i=0; i<input.length() && frame < MAX_FRAME; i++)
+        for (int currentRoll=0; currentRoll<rolls.length() && frame < MAX_FRAME; currentRoll++)
         {
-            switch (input.charAt(i)){
+            switch (rolls.charAt(currentRoll)){
                 case STRIKE:
                     if (tries==2)
-                        throw new IllegalArgumentException("X can't be at position "+ i + " in "+input);
+                        throw new IllegalArgumentException("X can't be at position "+ currentRoll + " in "+rolls);
                     else
-                        frames[frame++]= 10 + pinDropped(i+1) + pinDropped(i+2);
+                        frames[frame++]= 10 + pinDropped(currentRoll + 1) + pinDropped(currentRoll + 2);
                     tries=1;
                     break;
                 case SPARE:
                     if (tries==1)
-                        throw new IllegalArgumentException("/ can't be at position "+ i + " in "+input);
+                        throw new IllegalArgumentException("/ can't be at position "+ currentRoll + " in "+rolls);
                     else
-                        frames[frame++]= 10 + pinDropped(i+1);
+                        frames[frame++]= 10 + pinDropped(currentRoll + 1);
                     tries=1;
                     break;
                 default:
                     if (tries == 2) {
-                        frames[frame++] += pinDropped(i);
+                        frames[frame++] += pinDropped(currentRoll);
                         tries=1;
                     }
                     else
                     {
-                        frames[frame] += pinDropped(i);
+                        frames[frame] += pinDropped(currentRoll);
                         tries=2;
                     }
             }//switch
@@ -64,14 +64,14 @@ public class Score {
 
     /*
     * returns the number of pin dropped in a particular try.
-    * Assume that input is a valid set of tries.
+    * Assume that rolls is a valid set of tries.
     * */
     public int pinDropped(int index) {
         int value = 0;
-        if (index >= input.length() || index < 0)
+        if (index >= rolls.length() || index < 0)
             return 0;
 
-        switch (input.charAt(index)) {
+        switch (rolls.charAt(index)) {
             case MISS:
                 value = 0;
                 break;
@@ -82,7 +82,7 @@ public class Score {
                 value = MAX_PIN;
                 break;
             default:
-                value = Integer.parseInt(String.valueOf(input.charAt(index)));
+                value = Integer.parseInt(String.valueOf(rolls.charAt(index)));
         }
         return value;
     }
